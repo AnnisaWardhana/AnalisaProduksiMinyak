@@ -5,7 +5,6 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
-#import matplotlib.pyplot as plt
 
 #Fungsi Menuliskan Menu Pilihan Aplikasi
 def Menu_Utama(data_produksi):
@@ -16,7 +15,7 @@ def Menu_Utama(data_produksi):
     #Menampilkan pilihan fitur aplikasi
     
     pilihan_fitur = st.selectbox("Pilihan Fitur Aplikasi : ", ["Fitur 1 - Trend Produksi Tahunan Negara",
-           "Fitur 2 - Produksi Terbesar","Fitur 3 - Produksi Kumulatif Terbesar","Fitur 4 - Informasi Negara"])
+           "Fitur 2 - Produksi Terbesar","Fitur 3 - Produksi Kumulatif Terbesar","Fitur 4 - Informasi Negara","Fitur Tambahan - Trend Produksi Dunia"])
     
     
     #Mendefinisikan dictionary untuk menghitung produksi kumulatif setiap negara
@@ -50,6 +49,8 @@ def Menu_Utama(data_produksi):
             InfoProdZeroTahun(data_produksi_clean)    
             InfoKumulatifZero(produksi_kumulatif)
 
+    elif (pilihan_fitur == "Fitur Tambahan - Trend Produksi Dunia"):
+        Produksi_Dunia(data_produksi)
     return
 
 #Fungsi Menu 1 - Menampilkan Grafik Jumlah Produksi Minyak Mentah Terhadap Tahun dari negara yang dipilih
@@ -74,7 +75,7 @@ def Produksi_Tahunan(data_produksi):
     ).properties(title = "Trend Produksi Tahunan")
 
     st.altair_chart(chart, use_container_width = True)
-
+    
     return
 
 #Fungsi Menu 2 - Menampilkan Top-X Negara dengan Produksi Minyak Mentah Terbesar pada suatu tahun 
@@ -307,6 +308,23 @@ def InfoKumulatifZero(dict_kumulatif):
            TulisInfoNegara(key,data_negara) 
     
     return 
+
+#Fungsi Menu Tambahan - Menampilkan Grafik Jumlah Produksi Minyak Mentah seluruh negara
+def Produksi_Dunia(data_produksi):
+
+    # Memasukkan data produksi yang sudah dibersihkan ke dalam data frame
+    df = pd.DataFrame(data_produksi, columns=['negara','tahun','produksi','nama_negara'])
+
+         
+    # Menampilkan grafik produksi tahunan untuk seluruh negara
+    chart = alt.Chart(df).mark_line().encode(
+        x=alt.X("tahun", title = "Tahun"),
+        y=alt.Y("produksi", title = "Produksi"),
+        color =alt.Color("nama_negara")
+    ).properties(title = "Trend Produksi Tahunan Dunia")
+
+    st.altair_chart(chart, use_container_width = True)
+    return
 
 # START EKSEKUSI PROGRAM
 #Membuka file "kode_negara_lengkap.json" dan extract data ke dalam tabel "data_negara"
