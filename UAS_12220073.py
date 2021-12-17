@@ -5,7 +5,7 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 #Fungsi Menuliskan Menu Pilihan Aplikasi
 def Menu_Utama(data_produksi):
